@@ -1,0 +1,23 @@
+name: GitHub CI
+run-name: ${{ github.actor }} is pushing on GitHub 🚀
+push:
+  branches: [ main ]
+pull_request:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run tests
+        run: npm test    
