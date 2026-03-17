@@ -1,5 +1,5 @@
-name: GitHub CI
-run-name: ${{ github.actor }} is unit testing  on GitHub 🚀
+name : Github Playwright
+run-name: ${{ github.actor }} is e2e testing on GitHub 🚀
 on:
   push:
     branches: [ main ]
@@ -21,4 +21,4 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test    
+        run: npm run test:e2e

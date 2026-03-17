@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
-
+    "test": "jest",
+    "test:e2e": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/sergin513/test-actions#readme",
   "devDependencies": {
-    "jest": "^30.3.0"
+    "@playwright/test": "^1.58.2",
+    "jest": "^30.3.0",
+    "serve": "^14.2.6"
   }
 }
