@@ -1,4 +1,4 @@
-name: GitHub CI
+name: GitHub deploy CI
 run-name: ${{ github.actor }} deploying on GitHub 🚀
 on:
   workflow_run:
