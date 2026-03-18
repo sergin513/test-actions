@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --reporter=html"
   },
   "repository": {
     "type": "git",
