@@ -1,10 +1,5 @@
 name: GitHub deploy CI
 run-name: ${{ github.actor }} deploying on GitHub 🚀
-#on:
-#  workflow_run:
-#    workflows: ["Github Playwright", "GitHub CI"]
-#    types:
-#      - completed
 on:
   push:
     branches: [ main ]
@@ -14,16 +9,6 @@ permissions:
   pages: write
   id-token: write
   contents: read
-#jobs:
-#  deploy:
-#    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-#    runs-on: ubuntu-latest
-#    steps: 
-#      - uses: actions/checkout@v4
-#      - uses: actions/upload-pages-artifact@v3
-#        with:
-#          path: .
-#      - uses: actions/deploy-pages@v4
 jobs:
   test1:
     uses: ./.github/workflows/ci.yml
