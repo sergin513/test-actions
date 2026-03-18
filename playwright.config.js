@@ -10,5 +10,9 @@ module.exports = defineConfig({
     command: 'npx serve .',
     port: 3000,
     reuseExistingServer: true
-  }
+  },
+   projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  ]
 });
