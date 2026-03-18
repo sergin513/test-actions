@@ -10,5 +10,6 @@ test('somma funziona', async ({ page }) => {
   await page.locator('button').click();
 
   await expect(page.locator('#result')).toHaveText('10');
-
+ 
+  
 });
