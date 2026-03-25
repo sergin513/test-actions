@@ -15,6 +15,56 @@ jobs:
     uses: ./.github/workflows/ci.yml
   test2:
     uses: ./.github/workflows/playwright.yml
+  notify-failure:
+    name: Notify on test failure
+    needs: [test1, test2]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get actor email from commit
+        id: get-email
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            EMAIL="${{ github.event.pull_request.user.login }}@users.noreply.github.com"
+          else
+            EMAIL="${{ github.event.pusher.email }}"
+            if [ -z "$EMAIL" ]; then
+              EMAIL="${{ github.actor }}@users.noreply.github.com"
+            fi
+          fi
+          echo "email=$EMAIL" >> "$GITHUB_OUTPUT"
+
+      - name: Send failure notification email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "❌ Test failure in ${{ github.repository }} (${{ github.ref_name }})"
+          to: ${{ steps.get-email.outputs.email }}
+          from: "GitHub CI <${{ secrets.MAIL_USERNAME }}>"
+          body: |
+            Hello ${{ github.actor }},
+
+            One or more automated tests failed in the repository ${{ github.repository }}.
+
+            Details:
+            - Event   : ${{ github.event_name }}
+            - Branch  : ${{ github.ref_name }}
+            - Commit  : ${{ github.sha }}
+            - Actor   : ${{ github.actor }}
+            - Run URL : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Test results (success / failure / cancelled / skipped):
+            - Unit tests (Jest)         : ${{ needs.test1.result }}
+            - E2E tests (Playwright)    : ${{ needs.test2.result }}
+
+            Please review the failed workflow run linked above and fix the issues.
+
+            — GitHub Actions
+
   deploy:
     needs: [test1, test2]
     if: ${{ github.ref == 'refs/heads/main' }}
